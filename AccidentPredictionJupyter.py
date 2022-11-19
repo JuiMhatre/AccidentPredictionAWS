@@ -43,6 +43,12 @@ estimator = sagemaker.estimator.Estimator(container[my_region],
                                           sagemaker_session = sess,
                                           base_job_name = 'xgboost-accidentprediction'
                                          )
+estimator.set_hyperparameters(max_depth=5, 
+                              objective = 'binary:logistic', 
+                              eta=0.1,
+                              subsample=0.7,
+                              num_round=10,
+                              eval_metric = 'auc')
 print("Success - the MySageMakerInstance is in the " + my_region + " region. You will use the " + container[my_region] + " container for your SageMaker endpoint.")
 training_file = sagemaker.session.s3_input(s3_data=train_file_location, content_type = "csv")
 data_channels = {'train':training_file, 'validation':training_file}
